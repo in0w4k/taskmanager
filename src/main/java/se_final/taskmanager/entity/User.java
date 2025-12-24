@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import se_final.taskmanager.entity.enums.Role;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Getter
 @Setter
@@ -27,4 +30,7 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @ManyToMany(mappedBy = "members", fetch = FetchType.LAZY)
+    private Set<Project> projects = new HashSet<>();
 }

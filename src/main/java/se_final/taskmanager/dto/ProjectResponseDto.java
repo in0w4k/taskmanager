@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -15,4 +16,5 @@ public class ProjectResponseDto {
     private String description;
     private LocalDateTime createdAt;
     private String ownerUsername;
+    private List<String> memberUsernames;
 }
