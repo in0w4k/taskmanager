@@ -1,7 +1,7 @@
 insert into t_users (username, password, email, role) values
-                                                          ('ilya', 'test123', 'ilya@test.test', 'ROLE_ADMIN'),
-                                                          ('nurken', 'test456', 'nurken@test.test', 'ROLE_USER'),
-                                                          ('rafi', 'test789', 'rafi@test.test', 'ROLE_USER');
+                                                          ('ilya', '$2a$12$FqRaNn/chcpCFNYiFnt8yucqxQnwYGpalkHJZW60DgCJtT9G6Q4rW', 'ilya@test.test', 'ROLE_ADMIN'),
+                                                          ('nurken', '$2a$12$56s8aa3FJxn0AdtyPKXW1OkZNWHiwFHbBqSC0..yaSHpztOLxXqOO', 'nurken@test.test', 'ROLE_USER'),
+                                                          ('rafi', '$2a$12$cqTylcX2JLonLjIKoHhvi.UIuGYZKrXmKV2jaLDrl9ciUh3w7uZwe', 'rafi@test.test', 'ROLE_USER');
 
 insert into t_projects (name, description, created_at, owner_id) values
                                                                      ('Task Manager', 'Final Project for SE', current_timestamp, 1),
