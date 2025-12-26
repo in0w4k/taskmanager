@@ -1,6 +1,11 @@
 package se_final.taskmanager.service;
 
 import lombok.RequiredArgsConstructor;
+import org.jspecify.annotations.NullMarked;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import se_final.taskmanager.dto.UserRegisterDto;
 import se_final.taskmanager.dto.UserResponseDto;
@@ -13,9 +18,10 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
 
     public UserResponseDto registerUser(UserRegisterDto dto) {
         if (userRepository.existsByUsername(dto.getUsername())) {
@@ -27,6 +33,7 @@ public class UserService {
 
         User user = userMapper.toEntity(dto);
         user.setRole(Role.ROLE_USER);
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
         User savedUser = userRepository.save(user);
         return userMapper.toDto(savedUser);
     }
@@ -48,7 +55,7 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
         if (dto.getUsername() != null) user.setUsername(dto.getUsername());
         if (dto.getEmail() != null) user.setEmail(dto.getEmail());
-        if (dto.getPassword() != null) user.setPassword(dto.getPassword());
+        if (dto.getPassword() != null) user.setPassword(passwordEncoder.encode(dto.getPassword()));
         User updatedUser = userRepository.save(user);
         return userMapper.toDto(updatedUser);
     }
@@ -57,5 +64,12 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         userRepository.delete(user);
+    }
+
+    @Override
+    @NullMarked
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 }
